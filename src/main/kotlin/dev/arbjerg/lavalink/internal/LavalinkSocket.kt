@@ -222,12 +222,13 @@ class LavalinkSocket(private val node: LavalinkNode, private val clientName: Str
         val request = Request.Builder()
             .url("${node.baseUri}/v4/websocket")
             .addHeader("Authorization", node.password)
-            .addHeader("Client-Name", clientName ?: "Lavalink-Client/${CLIENT_VERSION}")
+            .addHeader("Client-Name", "Lavalink-Client/${CLIENT_VERSION}")
             .addHeader("User-Id", node.lavalink.userId.toString())
             .apply {
-                if (node.sessionId != null) {
+                if (node.sessionId != null)
                     addHeader("Session-Id", node.sessionId!!)
-                }
+                if (clientName != null && clientName.isNotBlank())
+                    addHeader("User-Agent", clientName)
             }
             .build()
 
