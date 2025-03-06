@@ -19,9 +19,9 @@ import java.util.concurrent.TimeUnit
 
 /**
  * @param userId ID of the bot for authenticating with Discord
- * @param clientName Name of the client, used for connecting to the Lavalink node(s)
+ * @param userAgent Name of the client, used for connecting to the Lavalink node(s)
  */
-class LavalinkClient(val userId: Long, var clientName: String?) : Closeable, Disposable {
+class LavalinkClient(val userId: Long, var userAgent: String?) : Closeable, Disposable {
     private val internalNodes = CopyOnWriteArrayList<LavalinkNode>()
     private val linkMap = ConcurrentHashMap<Long, Link>()
     private var clientOpen = true

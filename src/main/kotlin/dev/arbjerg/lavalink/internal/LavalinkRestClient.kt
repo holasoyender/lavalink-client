@@ -15,7 +15,8 @@ import java.io.IOException
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-class LavalinkRestClient(val node: LavalinkNode) {
+class LavalinkRestClient(val node: LavalinkNode, private val userAgent: String?) {
+
     fun getPlayers(): Mono<Players> {
         return newRequest {
             path("/v4/sessions/${node.sessionId}/players")
@@ -82,6 +83,10 @@ class LavalinkRestClient(val node: LavalinkNode) {
     internal fun newRequest(configure: HttpBuilder.() -> HttpBuilder): Call {
         val requestBuilder = Request.Builder()
             .addHeader("Authorization", node.password)
+            .apply {
+                if (userAgent != null)
+                    addHeader("User-Agent", userAgent)
+            }
             .get()
         val builder = configure(HttpBuilder(requestBuilder))
 
